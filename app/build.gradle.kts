@@ -3,11 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-kapt")
     id("androidx.room")
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.androidx.navigation.safeargs)
 }
 
 android {
@@ -79,7 +77,6 @@ dependencies {
 
     // room
     implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
@@ -88,13 +85,9 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     // navigation
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     // coroutine
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-
-    // recycler
-    implementation(libs.androidx.recyclerview)
 }
