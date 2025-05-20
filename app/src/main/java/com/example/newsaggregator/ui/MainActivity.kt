@@ -33,6 +33,7 @@ import com.example.newsaggregator.data.network.RssFeedFactory
 import com.example.newsaggregator.data.network.dto.ItemDto
 import com.example.newsaggregator.ui.theme.NewsAggregatorTheme
 import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
 
 class MainActivity : ComponentActivity() {
 
@@ -85,10 +86,11 @@ fun NewsItem(item: ItemDto) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // Показываем первое изображение из содержимого, если оно есть
-            item.contents.firstOrNull()?.let { content ->
+            val imageUrl = item.contents.lastOrNull()?.url // берем ссылку у последнего элемента в списке, так как она будет с самым высоким разрешением
+
+            imageUrl?.let {
                 Image(
-                    painter = rememberAsyncImagePainter(content.url),
+                    painter = rememberAsyncImagePainter(it),
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -106,9 +108,8 @@ fun NewsItem(item: ItemDto) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = item.description.take(150) + if (item.description.length > 150) "..." else "",
+                text = item.description.htmlToString(),
                 style = MaterialTheme.typography.bodyMedium,
-                maxLines = 3
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -120,3 +121,8 @@ fun NewsItem(item: ItemDto) {
         }
     }
 }
+
+fun String.htmlToString(): String =
+    Jsoup.parse(this).selectFirst("p")
+        ?.text()
+        ?: "ничего не нашли"
