@@ -15,22 +15,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.newsaggregator.data.network.RssFeed
+import com.example.newsaggregator.data.network.RssFeedFactory
 import com.example.newsaggregator.ui.theme.NewsAggregatorTheme
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.launch
-import nl.adaptivity.xmlutil.serialization.XML
-import okhttp3.MediaType
-import retrofit2.Retrofit
-
-private val retrofit = Retrofit.Builder()
-    .baseUrl("https://www.theguardian.com")
-    .addConverterFactory(
-        XML.asConverterFactory(
-            MediaType.get("application/xml; charset=UTF8")
-        )
-    ).build()
-
-private val guardian = retrofit.create(RssFeed::class.java)
 
 class MainActivity : ComponentActivity() {
 
@@ -43,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     Greeting(
                         text = "Press me!",
                         modifier = Modifier.padding(innerPadding),
-                        guardian,
+                        RssFeedFactory.guardian,
                     )
                 }
             }
@@ -86,7 +73,7 @@ fun GreetingPreview() {
     NewsAggregatorTheme {
         Greeting(
             text = "Press me!",
-            feed = guardian
+            feed = RssFeedFactory.guardian,
         )
     }
 }
