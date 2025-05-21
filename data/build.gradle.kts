@@ -2,9 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("androidx.room")
+    alias(libs.plugins.room)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -56,7 +55,6 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    // Inject
+    implementation(libs.javax.inject)
 }
