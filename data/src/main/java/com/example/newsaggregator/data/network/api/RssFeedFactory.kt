@@ -1,4 +1,4 @@
-package com.example.newsaggregator.data.network
+package com.example.newsaggregator.data.network.api
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import nl.adaptivity.xmlutil.serialization.XML

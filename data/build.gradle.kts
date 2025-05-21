@@ -59,4 +59,7 @@ dependencies {
 
     // Inject
     implementation(libs.javax.inject)
+
+    // jsoup
+    implementation(libs.jsoup)
 }

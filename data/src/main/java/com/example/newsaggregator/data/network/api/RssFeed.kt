@@ -1,4 +1,4 @@
-package com.example.newsaggregator.data.network
+package com.example.newsaggregator.data.network.api
 
 import com.example.newsaggregator.data.network.dto.RssDto
 import retrofit2.http.GET

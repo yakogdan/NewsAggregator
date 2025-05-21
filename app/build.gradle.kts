@@ -93,7 +93,4 @@ dependencies {
     // coroutine
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-
-    // jsoup
-    implementation(libs.jsoup)
 }

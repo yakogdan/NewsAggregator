@@ -28,12 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.newsaggregator.data.network.RssFeed
-import com.example.newsaggregator.data.network.RssFeedFactory
+import com.example.newsaggregator.data.network.api.RssFeed
+import com.example.newsaggregator.data.network.api.RssFeedFactory
 import com.example.newsaggregator.data.network.dto.ItemDto
+import com.example.newsaggregator.data.network.utils.htmlToString
 import com.example.newsaggregator.ui.theme.NewsAggregatorTheme
 import kotlinx.coroutines.launch
-import org.jsoup.Jsoup
 
 class MainActivity : ComponentActivity() {
 
@@ -86,7 +86,8 @@ fun NewsItem(item: ItemDto) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            val imageUrl = item.contents.lastOrNull()?.url // берем ссылку у последнего элемента в списке, так как она будет с самым высоким разрешением
+            val imageUrl =
+                item.contents.lastOrNull()?.url // берем ссылку у последнего элемента в списке, так как она будет с самым высоким разрешением
 
             imageUrl?.let {
                 Image(
@@ -121,8 +122,3 @@ fun NewsItem(item: ItemDto) {
         }
     }
 }
-
-fun String.htmlToString(): String =
-    Jsoup.parse(this).selectFirst("p")
-        ?.text()
-        ?: "ничего не нашли"
