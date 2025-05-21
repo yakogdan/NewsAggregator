@@ -1,4 +1,4 @@
-package com.example.newsaggregator.ui
+package com.example.newsaggregator.ui.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -20,21 +20,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
-import com.example.newsaggregator.data.network.api.RssFeed
-import com.example.newsaggregator.data.network.api.RssFeedFactory
-import com.example.newsaggregator.data.network.dto.ItemDto
 import com.example.newsaggregator.data.network.utils.htmlToString
+import com.example.newsaggregator.domain.models.NewsModel
+import com.example.newsaggregator.ui.screens.news.NewsViewModel
 import com.example.newsaggregator.ui.theme.NewsAggregatorTheme
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +42,6 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NewsList(
                         modifier = Modifier.padding(innerPadding),
-                        feed = RssFeedFactory.guardian,
                     )
                 }
             }
@@ -57,27 +53,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NewsList(
     modifier: Modifier = Modifier,
-    feed: RssFeed,
+    newsViewModel: NewsViewModel = hiltViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
-    var news by remember { mutableStateOf<List<ItemDto>>(emptyList()) }
 
-    scope.launch {
-        val r = feed.getRss()
-        news = r.channel.items
-    }
+    val newsList by newsViewModel.news.collectAsStateWithLifecycle()
 
     LazyColumn(
         modifier = modifier
     ) {
-        items(news) { item ->
+        items(newsList) { item ->
             NewsItem(item = item)
         }
     }
 }
 
 @Composable
-fun NewsItem(item: ItemDto) {
+fun NewsItem(item: NewsModel) {
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -86,8 +77,7 @@ fun NewsItem(item: ItemDto) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            val imageUrl =
-                item.contents.lastOrNull()?.url // берем ссылку у последнего элемента в списке, так как она будет с самым высоким разрешением
+            val imageUrl = "" // TODO: доделать
 
             imageUrl?.let {
                 Image(
@@ -116,7 +106,7 @@ fun NewsItem(item: ItemDto) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = item.dcDate,
+                text = item.pubDate,
                 style = MaterialTheme.typography.bodySmall
             )
         }
