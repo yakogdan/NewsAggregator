@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
-import com.example.newsaggregator.data.network.utils.htmlToString
 import com.example.newsaggregator.domain.models.NewsModel
 import com.example.newsaggregator.ui.screens.news.NewsViewModel
 import com.example.newsaggregator.ui.theme.NewsAggregatorTheme
@@ -82,9 +81,9 @@ fun NewsItem(item: NewsModel) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            val imageUrl = "" // TODO: доделать
 
-            imageUrl?.let {
+
+            item.imageUrl?.let {
                 Image(
                     painter = rememberAsyncImagePainter(it),
                     contentDescription = "",
@@ -104,7 +103,7 @@ fun NewsItem(item: NewsModel) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = item.description.htmlToString(),
+                text = item.description,
                 style = MaterialTheme.typography.bodyMedium,
             )
 

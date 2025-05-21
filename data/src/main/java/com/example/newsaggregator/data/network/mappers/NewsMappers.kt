@@ -9,6 +9,7 @@ private fun ItemDto.toModel(): NewsModel = NewsModel(
     link = link,
     description = description.htmlToString(),
     pubDate = dcDate,
+    imageUrl = contents.lastOrNull()?.url,
 )
 
 fun List<ItemDto>.toModels(): List<NewsModel> = map { it.toModel() }
