@@ -3,7 +3,6 @@ package com.example.newsaggregator.ui.screens.news
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsaggregator.domain.models.NewsModel
 import com.example.newsaggregator.domain.usecases.GetNewsFromApiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -16,18 +15,21 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val getNewsFromApiUseCase: GetNewsFromApiUseCase,
-): ViewModel() {
+) : ViewModel() {
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        _newsScreenState.value = NewsScreenState.Error(throwable = throwable)
         Log.e("myExceptionHandler", throwable.message.toString())
     }
 
-    private val _news: MutableStateFlow<List<NewsModel>> = MutableStateFlow(emptyList())
-    val news: StateFlow<List<NewsModel>> = _news.asStateFlow()
+    private val _newsScreenState: MutableStateFlow<NewsScreenState> =
+        MutableStateFlow(NewsScreenState.Initial)
+    val newsScreenState: StateFlow<NewsScreenState> = _newsScreenState.asStateFlow()
 
     fun loadNews() {
         viewModelScope.launch(exceptionHandler) {
-            _news.value = getNewsFromApiUseCase.invoke()
+            _newsScreenState.value = NewsScreenState.Loading
+            _newsScreenState.value = NewsScreenState.Success(news = getNewsFromApiUseCase.invoke())
         }
     }
 }
