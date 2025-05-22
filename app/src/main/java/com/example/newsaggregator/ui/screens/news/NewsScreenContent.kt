@@ -29,13 +29,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.newsaggregator.domain.models.NewsModel
+import com.example.newsaggregator.ui.navigation.Screen
 
 @Composable
 fun NewsScreenContent(
     padding: PaddingValues,
+    navHostController: NavHostController,
     newsViewModel: NewsViewModel,
 ) {
     val newsScreenState by newsViewModel.newsScreenState.collectAsStateWithLifecycle()
@@ -60,7 +63,7 @@ fun NewsScreenContent(
             is NewsScreenState.Success -> {
                 SuccessState(
                     state = state,
-                    onItemClick = {},
+                    navHostController = navHostController,
                 )
             }
         }
@@ -84,7 +87,7 @@ private fun ErrorState(message: String) {
 @Composable
 private fun SuccessState(
     state: NewsScreenState.Success,
-    onItemClick: (String) -> Unit,
+    navHostController: NavHostController,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(
@@ -93,7 +96,11 @@ private fun SuccessState(
         ) { newsModel ->
             NewsItem(
                 newsModel = newsModel,
-                onClick = onItemClick,
+                onClick = {
+                    navHostController.navigate(
+                        route = Screen.NewsDetail.route
+                    )
+                },
             )
         }
     }

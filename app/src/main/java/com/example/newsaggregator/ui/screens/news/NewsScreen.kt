@@ -7,10 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 
 @Composable
 fun NewsScreen(
     modifier: Modifier = Modifier,
+    navHostController: NavHostController,
     newsViewModel: NewsViewModel = hiltViewModel(),
 ) {
 
@@ -24,6 +26,7 @@ fun NewsScreen(
     ) { padding ->
         NewsScreenContent(
             padding = padding,
+            navHostController = navHostController,
             newsViewModel = newsViewModel,
         )
     }
