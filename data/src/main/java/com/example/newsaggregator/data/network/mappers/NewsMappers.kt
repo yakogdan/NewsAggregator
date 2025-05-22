@@ -6,7 +6,7 @@ import com.example.newsaggregator.domain.models.NewsModel
 
 private fun ItemDto.toModel(): NewsModel = NewsModel(
     title = title,
-    link = link,
+    newsUrl = link,
     description = description.htmlToString(),
     pubDate = dcDate,
     imageUrl = contents.lastOrNull()?.url,

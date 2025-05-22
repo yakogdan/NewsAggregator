@@ -19,8 +19,8 @@ fun MainScreen() {
             )
         },
 
-        newsDetailScreen = {
-            NewsDetailScreen()
+        newsDetailScreen = { newsUrl ->
+            NewsDetailScreen(newsUrl = newsUrl)
         },
     )
 }

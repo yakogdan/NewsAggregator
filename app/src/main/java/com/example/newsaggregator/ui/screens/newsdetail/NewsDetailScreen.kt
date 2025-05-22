@@ -11,7 +11,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun NewsDetailScreen(url: String = "https://www.theguardian.com/lifeandstyle/2025/may/20/i-am-taking-beta-blockers-for-my-anxiety-and-so-are-many-of-my-friends-is-that-a-problem") { // TODO: убрать ссылку
+fun NewsDetailScreen(newsUrl: String?) {
     AndroidView(
         factory = { context ->
             WebView(context).apply {
@@ -29,7 +29,10 @@ fun NewsDetailScreen(url: String = "https://www.theguardian.com/lifeandstyle/202
         },
         modifier = Modifier.fillMaxSize(),
         update = { webView ->
+            val url = newsUrl ?: GUARDIAN_DEFAULT_ULR
             webView.loadUrl(url)
         }
     )
 }
+
+private const val GUARDIAN_DEFAULT_ULR = "https://www.theguardian.com/international"

@@ -98,7 +98,7 @@ private fun SuccessState(
                 newsModel = newsModel,
                 onClick = {
                     navHostController.navigate(
-                        route = Screen.NewsDetail.route
+                        route = Screen.NewsDetail.getRouteWithArgs(newsModel.newsUrl)
                     )
                 },
             )
