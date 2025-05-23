@@ -8,11 +8,6 @@ interface RssFeed {
 
     @GET("/{query}/rss")
     suspend fun getRss(
-        @Path("query") query: String = getRandomCategory()
+        @Path("query") query: String = "international"
     ): RssDto
-}
-
-fun getRandomCategory(): String {
-    val categories = listOf("international", "business", "technology", "football", "music")
-    return categories.random()
 }
