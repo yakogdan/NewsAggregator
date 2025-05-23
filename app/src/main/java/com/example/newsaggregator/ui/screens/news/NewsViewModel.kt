@@ -29,7 +29,31 @@ class NewsViewModel @Inject constructor(
     fun loadNews() {
         viewModelScope.launch(exceptionHandler) {
             _newsScreenState.value = NewsScreenState.Loading
-            _newsScreenState.value = NewsScreenState.Success(news = getNewsFromApiUseCase.invoke())
+            _newsScreenState.value = NewsScreenState.Success(
+                news = getNewsFromApiUseCase.invoke(),
+                isRefreshing = false,
+            )
+        }
+    }
+
+    fun refreshNews() {
+        viewModelScope.launch(exceptionHandler) {
+
+            val currentNews = if (newsScreenState.value is NewsScreenState.Success) {
+                (newsScreenState.value as NewsScreenState.Success).news
+            } else {
+                emptyList()
+            }
+
+            _newsScreenState.value = NewsScreenState.Success(
+                news = currentNews,
+                isRefreshing = true,
+            )
+
+            _newsScreenState.value = NewsScreenState.Success(
+                news = getNewsFromApiUseCase.invoke(),
+                isRefreshing = false
+            )
         }
     }
 }

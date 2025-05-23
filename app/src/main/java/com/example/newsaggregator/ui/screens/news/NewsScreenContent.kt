@@ -13,8 +13,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -61,6 +63,7 @@ fun NewsScreenContent(
                 SuccessState(
                     state = state,
                     navHostController = navHostController,
+                    onRefresh = { newsViewModel.refreshNews() },
                 )
             }
         }
@@ -69,29 +72,36 @@ fun NewsScreenContent(
 
 @Composable
 private fun LoadingState() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
         CircularProgressIndicator()
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SuccessState(
     state: NewsScreenState.Success,
     navHostController: NavHostController,
+    onRefresh: () -> Unit,
 ) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(
-            items = state.news,
-            key = { it.title }
-        ) { newsModel ->
-            NewsCard(
-                newsModel = newsModel,
-                onClick = {
-                    navHostController.navigate(
-                        route = Screen.NewsDetail.getRouteWithArgs(newsModel.newsUrl)
-                    )
-                },
-            )
+    PullToRefreshBox(
+        isRefreshing = state.isRefreshing,
+        onRefresh = onRefresh,
+    ) {
+        LazyColumn(Modifier.fillMaxSize()) {
+            items(state.news, key = { it.title }) { newsModel ->
+                NewsCard(
+                    newsModel = newsModel,
+                    onClick = {
+                        navHostController.navigate(
+                            Screen.NewsDetail.getRouteWithArgs(newsModel.newsUrl)
+                        )
+                    }
+                )
+            }
         }
     }
 }
