@@ -7,8 +7,11 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -16,6 +19,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 fun NewsDetailScreenContent(
     newsUrl: String?,
     padding: PaddingValues,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
 ) {
     AndroidView(
         modifier = Modifier
@@ -33,6 +37,7 @@ fun NewsDetailScreenContent(
                     domStorageEnabled = true
                     setSupportZoom(true)
                 }
+                setBackgroundColor(backgroundColor.toArgb())
             }
         },
         update = { webView ->
