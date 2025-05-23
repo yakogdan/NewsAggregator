@@ -36,7 +36,7 @@ fun NewsCard(
         elevation = CardDefaults.cardElevation(),
     ) {
         Column(
-            modifier = Modifier.Companion.padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Text(
                 text = newsModel.title,
@@ -44,7 +44,7 @@ fun NewsCard(
                 maxLines = 2,
             )
 
-            Spacer(modifier = Modifier.Companion.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = newsModel.description,
@@ -53,7 +53,7 @@ fun NewsCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(modifier = Modifier.Companion.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             newsModel.imageUrl?.let { imageUrl ->
                 AsyncImage(
@@ -62,14 +62,14 @@ fun NewsCard(
                         .crossfade(true)
                         .build(),
                     contentDescription = null,
-                    modifier = Modifier.Companion
+                    modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
                         .clip(androidx.compose.foundation.shape.RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Companion.Crop,
+                    contentScale = ContentScale.Crop,
                 )
 
-                Spacer(modifier = Modifier.Companion.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
             Text(
