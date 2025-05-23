@@ -4,4 +4,5 @@
     <string name="error_uploading_news_image">error uploading the news image</string>
     <string name="retry">Retry</string>
     <string name="error_while_loading_news">Error while loading news: %1$s</string>
+    <string name="share_with">share with…</string>
 </resources>

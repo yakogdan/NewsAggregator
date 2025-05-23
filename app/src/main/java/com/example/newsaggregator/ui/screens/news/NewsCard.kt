@@ -1,7 +1,9 @@
 package com.example.newsaggregator.ui.screens.news
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,11 +39,21 @@ fun NewsCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(all = 8.dp)
-            .clickable { onClick() },
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = {
+                    sendNewsUrl(
+                        newsUrl = newsModel.newsUrl,
+                        context = context,
+                    )
+                },
+            ),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(),
     ) {
@@ -113,4 +125,21 @@ fun NewsCard(
             )
         }
     }
+}
+
+private fun sendNewsUrl(
+    newsUrl: String,
+    context: Context,
+) {
+    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+        putExtra(Intent.EXTRA_TEXT, newsUrl)
+        type = "text/plain"
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(
+        Intent.createChooser(
+            sendIntent,
+            context.getString(R.string.share_with)
+        )
+    )
 }
