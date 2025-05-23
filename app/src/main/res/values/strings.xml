@@ -2,4 +2,6 @@
     <string name="app_name">NewsAggregator</string>
     <string name="news_image">news image</string>
     <string name="error_uploading_news_image">error uploading the news image</string>
+    <string name="retry">Retry</string>
+    <string name="error_while_loading_news">Error while loading news: %1$s</string>
 </resources>
