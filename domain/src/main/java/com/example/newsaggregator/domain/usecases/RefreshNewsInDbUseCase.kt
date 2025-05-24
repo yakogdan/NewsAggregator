@@ -4,10 +4,10 @@ import com.example.newsaggregator.domain.models.NewsModel
 import com.example.newsaggregator.domain.repositories.NewsRepository
 import javax.inject.Inject
 
-class GetNewsFromApiUseCase @Inject constructor(
-    private val repository: NewsRepository,
+class RefreshNewsInDbUseCase @Inject constructor(
+    private var repository: NewsRepository,
 ) {
-    suspend fun invoke(): List<NewsModel> {
-        return repository.getNewsFromApi()
+    suspend fun invoke(news: List<NewsModel>) {
+        repository.refreshNewsInDb(news = news)
     }
 }
