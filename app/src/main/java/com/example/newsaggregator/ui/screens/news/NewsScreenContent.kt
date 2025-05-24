@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +40,10 @@ fun NewsScreenContent(
     newsViewModel: NewsViewModel,
 ) {
     val newsScreenState by newsViewModel.newsScreenState.collectAsStateWithLifecycle()
+
+    val listState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState()
+    }
 
     Box(
         modifier = Modifier
@@ -63,6 +69,7 @@ fun NewsScreenContent(
                 SuccessState(
                     state = state,
                     navHostController = navHostController,
+                    listState = listState,
                     onRefresh = { newsViewModel.refreshNews() },
                 )
             }
@@ -85,13 +92,17 @@ private fun LoadingState() {
 private fun SuccessState(
     state: NewsScreenState.Success,
     navHostController: NavHostController,
+    listState: LazyListState,
     onRefresh: () -> Unit,
 ) {
     PullToRefreshBox(
         isRefreshing = state.isRefreshing,
         onRefresh = onRefresh,
     ) {
-        LazyColumn(Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = listState,
+        ) {
             items(state.news, key = { it.title }) { newsModel ->
                 NewsCard(
                     newsModel = newsModel,
