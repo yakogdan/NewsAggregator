@@ -107,7 +107,7 @@ fun NewsCard(
                     Image(
                         modifier = Modifier.matchParentSize(),
                         painter = painterResource(R.drawable.ic_broken_image),
-                        contentDescription = stringResource(R.string.error_uploading_news_image),
+                        contentDescription = stringResource(R.string.error_downloading_news_image),
                         contentScale = ContentScale.FillHeight,
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
                     )
